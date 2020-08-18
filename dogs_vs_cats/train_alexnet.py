@@ -2,9 +2,10 @@
 import sys
 sys.path.append("../")
 import import_ipynb
+import matplotlib.pyplot as plt
 from config import dogs_vs_cats_config as config
 from pyimage.preprocessing.preprocessors import ImageToArrayPreprocessor, SimplePreprocessor,PatchPreprocessor, MeanPreprocessor
-from pyimage.callbacks import TrainingMonitor
+from pyimage.callbacks.training_monitor import TrainingMonitor
 from pyimage.io.hdf5py import HDF5DatasetGenerator
 from pyimage.nn.alexnet import AlexNet
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -49,14 +50,14 @@ callbacks = [TrainingMonitor(path)]
 
 
 # train the network
-model.fit_generator(
+H = model.fit_generator(
     trainGen.generator(), 
     steps_per_epoch=trainGen.numImages // 128,
     validation_data=valGen.generator(), 
     validation_steps=valGen.numImages // 128,
     epochs=75,
-    max_queue_size=10,
-    callbacks=callbacks, verbose=1)
+    max_queue_size=10, 
+    verbose=1)
 
 
 # save the model to file
@@ -66,3 +67,15 @@ model.save(config.MODEL_PATH, overwrite=True)
 # close the HDF5 datasets
 trainGen.close()
 valGen.close()
+
+plt.style.use("ggplot")
+plt.figure()
+plt.plot(np.arange(0, 75), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, 75), H.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, 75), H.history["accuracy"], label="train_acc")
+plt.plot(np.arange(0, 75), H.history["val_accuracy"], label="val_acc")
+plt.title("Training Loss and Accuracy")
+plt.xlabel("Epoch #")
+plt.ylabel("Loss/Accuracy")
+plt.legend()
+plt.show()
