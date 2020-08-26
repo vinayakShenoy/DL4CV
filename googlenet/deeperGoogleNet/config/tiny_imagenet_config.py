@@ -1,17 +1,17 @@
 from os import path
 
 # define the paths to the training and validation directories
-TRAIN_IMAGES = "datasets/train"
-VAL_IMAGES = "datasets/val/images"
+TRAIN_IMAGES = "datasets/tiny-imagenet-200/train"
+VAL_IMAGES = "datasets/tiny-imagenet-200/val/images"
 
 # define the path to the file that maps validation filenames to their
 # corresponding class labels
-VAL_MAPPINGS = "datasets/val-annotations.txt"
+VAL_MAPPINGS = "datasets/tiny-imagenet-200/val-annotations.txt"
 
 # define paths to wordnet heirarchy files which are used to generate our class
 # labels
-WORDNET_IDS = "datasets/wnids.txt"
-WORD_LABELS = "datasets/words.txt"
+WORDNET_IDS = "datasets/tiny-imagenet-200/wnids.txt"
+WORD_LABELS = "datasets/tiny-imagenet-200/words.txt"
 
 # since we do not have access to the testing data we need to
 # take a number of images from the training data and use it instead
